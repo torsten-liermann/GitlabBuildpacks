@@ -10,7 +10,7 @@ cache: &global_cache
     - echo "{\"auths\":{\"$HARBOR_URL\":{\"username\":\"$HARBOR_USERNAME\",\"password\":\"$HARBOR_PASSWORD\"}}}" >> ~/.docker/config.json
 
 .maven-java-environment:
-  image: "$CNCF_BUILDER_IMAGE:full"
+  image: "$CNCF_BUILDER_IMAGE"
   cache:
     <<: *global_cache
     policy: pull
@@ -21,10 +21,10 @@ cache: &global_cache
     - export PATH="$(pwd):$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH"
 
 create-java-maven-environment:
-  image: "$CNCF_BUILDER_IMAGE:full"
+  image: "$CNCF_BUILDER_IMAGE"
   stage: .pre
   extends: [ ".registry-auth-for-docker" ]
   script:
     - echo -n -this-option-will-break-maven > platform/env/BP_MAVEN_BUILD_ARGUMENTS
-    - /cnb/lifecycle/creator -platform ./platform -log-level debug -app . $IMAGE_NAME:latest || true
+    - /cnb/lifecycle/creator -platform ./platform -log-level debug -app . -cache-image $IMAGE_NAME/paketo-build-cache:latest $IMAGE_NAME:latest || true
     - tar czf cnb.tgz /layers ~/.docker

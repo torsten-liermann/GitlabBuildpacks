@@ -1,5 +1,5 @@
 deploy:docker:
-  image: "$CNCF_BUILDER_IMAGE:tiny"
+  image: "$CNCF_BUILDER_IMAGE"
   stage: push
   extends: [ ".registry-auth-for-docker" ]
   artifacts:
