@@ -1,0 +1,35 @@
+cache: &global_cache
+  key: "build-$CI_PIPELINE_ID"
+  paths:
+    - "cnb.tgz"
+  policy: pull-push
+
+.registry-auth-for-docker:
+  before_script:
+    - mkdir ~/.docker
+    - echo "{\"auths\":{\"$HARBOR_URL\":{\"username\":\"$HARBOR_USERNAME\",\"password\":\"$HARBOR_PASSWORD\"}}}" >> ~/.docker/config.json
+
+.maven-java-environment:
+  image: "$CNCF_BUILDER_IMAGE:full"
+  cache:
+    <<: *global_cache
+    policy: pull
+  before_script:
+    - ( cd / && tar xzf $CI_PROJECT_DIR/cnb.tgz )
+    - export JAVA_HOME='/layers/paketo-buildpacks_bellsoft-liberica/jdk'
+    - export MAVEN_HOME="$(dirname $(find /layers -name mvn -type f))"
+    - export PATH="$(pwd):$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH"
+
+create-java-maven-environment:
+  image: "$CNCF_BUILDER_IMAGE:full"
+  stage: .pre
+  extends: [ ".registry-auth-for-docker" ]
+  #  services:
+  #    - name: harbor.infra.k8s.akdb.net/hub.docker.com/library/docker:20.10.16-dind
+  #      alias: dockerdaemon
+  script:
+    - env
+    - echo -n "$DOCKERDAEMON_PORT_2375_TCP" >platform/env/DOCKER_HOST
+    - echo -n -this-option-will-break-maven > platform/env/BP_MAVEN_BUILD_ARGUMENTS
+    - /cnb/lifecycle/creator -platform ./platform -log-level debug -app . -cache-image $IMAGE_NAME/paketo-build-cache:latest $IMAGE_NAME:latest || true
+    - tar czf cnb.tgz /layers ~/.docker

@@ -1,0 +1,5 @@
+variables:
+  IMAGE_NAME: "$HARBOR_URL/buildpack-demo"
+  DOCKER_HOST: tcp://dockerdaemon:2375
+  DOCKER_TLS_CERTDIR: ""
+  CNCF_BUILDER_IMAGE: "paketobuildpacks/builder"

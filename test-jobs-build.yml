@@ -1,0 +1,26 @@
+
+.dockerservice:
+  variables:
+    DOCKER_HOST: tcp://dockerdaemon:2375
+    DOCKER_TLS_CERTDIR: ""
+  services:
+    - name: docker:20.10.16-dind
+      alias: dockerdaemon
+      command: [ '--tls=false', '--rootless', '--host=tcp://0.0.0.0:2375', '--registry-mirror=https://$HARBOR_URL', '--debug', '--log-level=debug', '--raw-logs' ]
+
+test:main:
+  stage: test
+  extends: [ .maven-java-environment, .dockerservice ]
+  artifacts:
+    reports:
+      junit:
+        - target/surefire-reports/*.xml
+        - target/surefire-reports/*.txt
+        - target/failsafe-reports/*.xml
+        - target/failsafe-reports/*.txt
+        - ./*.pdf
+  coverage: '/Total.*?([0-9]{1,3})%/'
+  allow_failure: true
+  script:
+    - mvnw $MAVEN_CLI_OPTS test jacoco:report $MAVEN_PROXY_OPTS
+    - cat target/site/jacoco/index.html
