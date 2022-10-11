@@ -1,0 +1,10 @@
+include:
+  - local: create-java-maven-environment.yml
+  - local: validation-jobs-build.yml
+  - local: test-jobs-build.yml
+  - local: image-build-push.yml
+
+stages:
+  - build
+  - test
+  - push
