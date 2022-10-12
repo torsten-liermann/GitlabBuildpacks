@@ -16,4 +16,8 @@ cleanup_pipelinecache:
   allow_failure: true
   script:
 # funktioniert nicht ueberall 'permission denied'    - rm -f /cache/$CI_PROJECT_PATH/build-$CI_PIPELINE_ID-protected/cache.zip
+    - ls -l cnb.tgz || true
+    - id || true
+    - ls -l /cache/$CI_PROJECT_PATH/build-$CI_PIPELINE_ID-protected/cache.zip || true
+    - echo "empty" >/cache/abc || true
     - echo "empty file" > cnb.tgz
