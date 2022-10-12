@@ -17,7 +17,8 @@ cache: &global_cache
   before_script:
     - mount | grep /cache
     - ls -l
-    - [ -d "/cache/$CI_PROJECT_ROOT_NAMESPACE/$CI_PROJECT_NAME" ] || echo "Project Cache nicht da"
+    - ls -l /cache/*
+    - if [ ! -d "/cache/$CI_PROJECT_ROOT_NAMESPACE/$CI_PROJECT_NAME" ] ; then echo "Project Cache nicht da" ; fi
     - ( cd / && tar xzf $CI_PROJECT_DIR/cnb.tgz )
     - export JAVA_HOME='/layers/paketo-buildpacks_bellsoft-liberica/jdk'
     - export MAVEN_HOME="$(dirname $(find /layers -name mvn -type f))"
