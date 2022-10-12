@@ -15,5 +15,5 @@ cleanup_pipelinecache:
   when: always
   allow_failure: true
   script:
-    - rm -f /cache/$CI_PROJECT_ROOT_NAMESPACE/$CI_PROJECT_NAME/build-$CI_PIPELINE_ID-protected/cache.zip
+    - rm -f /cache/$CI_PROJECT_PATH/build-$CI_PIPELINE_ID-protected/cache.zip
     - rm -f cnb.tgz
