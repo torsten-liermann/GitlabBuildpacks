@@ -10,6 +10,7 @@ cache: &global_cache
     - echo "{\"auths\":{\"$HARBOR_URL\":{\"username\":\"$HARBOR_USERNAME\",\"password\":\"$HARBOR_PASSWORD\"}}}" >> ~/.docker/config.json
 
 .maven-java-environment:
+  image: "$CNCF_BUILDER_IMAGE"
   cache:
     <<: *global_cache
     policy: pull
@@ -20,7 +21,7 @@ cache: &global_cache
     - export PATH="$(pwd):$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH"
 
 create-java-maven-environment:
-  image: "$CNCF_BUILDER_IMAGE:base"
+  image: "$CNCF_BUILDER_IMAGE"
   stage: .pre
   extends: [ ".registry-auth-for-docker" ]
   script:
