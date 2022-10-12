@@ -4,7 +4,6 @@ variables:
   DOCKER_TLS_CERTDIR: ""
   CNCF_BUILDER_IMAGE: "$HARBOR_URL/t527/akdb/egov/bsp/demos/paketobuildpacks/builder:base"
   DOCKER_IN_DOCKER_IMAGE: "$HARBOR_URL/hub.docker.com/library/docker:20.10.16-dind"
-  CI_DEBUG_TRACE: "true"
 
 include:
   - local: create-java-maven-environment.yml
