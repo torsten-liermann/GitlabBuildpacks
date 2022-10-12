@@ -17,8 +17,9 @@ cache: &global_cache
   before_script:
     - mount | grep /cache
     - ls -l
-    - ls -lR /cache/$CI_PROJECT_ROOT_NAMESPACE
-    - ls -l /cache/$CI_PROJECT_ROOT_NAMESPACE/$CI_PROJECT_NAME/build-$CI_PIPELINE_ID-protected/cache.zip
+    - ls -l /cache/* || true
+    - ls -l /cache/$CI_PROJECT_ROOT_NAMESPACE/$CI_PROJECT_NAME || true
+    - ls -l /cache/$CI_PROJECT_ROOT_NAMESPACE/$CI_PROJECT_NAME/build-$CI_PIPELINE_ID-protected/cache.zip || true
     - ( cd / && tar xzf $CI_PROJECT_DIR/cnb.tgz )
     - export JAVA_HOME='/layers/paketo-buildpacks_bellsoft-liberica/jdk'
     - export MAVEN_HOME="$(dirname $(find /layers -name mvn -type f))"
