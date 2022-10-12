@@ -22,12 +22,3 @@ build:versions:display-property-updates:
     - mvnw $MAVEN_CLI_OPTS $MAVEN_PROXY_OPTS versions:display-property-updates >/tmp/out && cat /tmp/out
     - grep -q 'The following version property updates are available' /tmp/out || exit 0 && (echo 'There is a newer dependency version available. See output above.' && exit 1)
 
-build_artifact:
-  stage: build
-  script:
-    - printf "To build your project, please create a build_artifact job into your .gitlab-ci.yml file.\nMore information at https://docs.gitlab.com/ee/ci/cloud_deployment\n"
-    - exit 1
-  rules:
-    - if: '$BUILD_DISABLED'
-      when: never
-    - if: '$AUTO_DEVOPS_PLATFORM_TARGET == "EC2"'
