@@ -15,6 +15,8 @@ cache: &global_cache
     <<: *global_cache
     policy: pull
   before_script:
+    - ( cd ../../../../../../cache/akdb/egov/bsp/eap6/demo-space && pwd ) || true
+    - ( cd ../../../../../../cache/akdb/egov/bsp/eap6/demo-space/build-$CI_PIPELINE_ID-protected && pwd ) || true
     - ls -l "/cache/$CI_PROJECT_PATH/build-$CI_PIPELINE_ID-protected" || true
     - id || true
     - ( cd / && tar xzf "$CI_PROJECT_DIR/cnb.tgz" )
