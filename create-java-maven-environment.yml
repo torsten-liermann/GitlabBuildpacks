@@ -17,7 +17,7 @@ cache: &global_cache
   before_script:
     - ls -l "/cache/$CI_PROJECT_PATH/build-$CI_PIPELINE_ID-protected" || true
     - id || true
-    - ( cd / && tar xzf $CI_PROJECT_PATH/cnb.tgz )
+    - ( cd / && tar xzf "$CI_PROJECT_DIR/cnb.tgz" )
     - export JAVA_HOME='/layers/paketo-buildpacks_bellsoft-liberica/jdk'
     - export MAVEN_HOME="$(dirname $(find /layers -name mvn -type f))"
     - export PATH="$(pwd):$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH"
