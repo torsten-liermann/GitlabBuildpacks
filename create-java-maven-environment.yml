@@ -22,7 +22,7 @@ cache: &global_cache
     - ls -l "/cache/$CI_PROJECT_PATH/build-$CI_PIPELINE_ID-protected" || true
     - id || true
     - mount | grep cache || true
-    - ls -l /cache || true
+    - ls -ld /cache || true
     - ls -lR /cache || true
     - ( cd / && tar xzf "$CI_PROJECT_DIR/cnb.tgz" )
     - export JAVA_HOME='/layers/paketo-buildpacks_bellsoft-liberica/jdk'
