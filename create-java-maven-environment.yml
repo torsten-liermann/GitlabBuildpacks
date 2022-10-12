@@ -15,6 +15,7 @@ cache: &global_cache
     <<: *global_cache
     policy: pull
   before_script:
+    - mount | grep /cache
     - ( cd / && tar xzf $CI_PROJECT_DIR/cnb.tgz )
     - export JAVA_HOME='/layers/paketo-buildpacks_bellsoft-liberica/jdk'
     - export MAVEN_HOME="$(dirname $(find /layers -name mvn -type f))"
