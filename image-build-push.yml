@@ -18,3 +18,4 @@ cleanup_pipelinecache:
     - ls -l /cache/$CI_PROJECT_ROOT_NAMESPACE/$CI_PROJECT_NAME/build-$CI_PIPELINE_ID-protected/cache.zip || true
     - rm -f /cache/$CI_PROJECT_ROOT_NAMESPACE/$CI_PROJECT_NAME/build-$CI_PIPELINE_ID-protected/cache.zip
     - rm -f cnb.tgz
+    - sleep 3600
