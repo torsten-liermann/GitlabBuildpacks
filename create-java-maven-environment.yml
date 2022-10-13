@@ -19,7 +19,6 @@ cache: &global_cache
     - ls -l "/cache/$CI_PROJECT_PATH" || true
     - ls -lR "/cache" || true
     - id || true
-    - sleep 3600
     - ( cd / && tar xzf $CI_PROJECT_DIR/cnb.tgz )
     - export JAVA_HOME='/layers/paketo-buildpacks_bellsoft-liberica/jdk'
     - export MAVEN_HOME="$(dirname $(find /layers -name mvn -type f))"
