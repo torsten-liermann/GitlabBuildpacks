@@ -6,7 +6,7 @@
   services:
     - name: $DOCKER_IN_DOCKER_IMAGE
       alias: dockerdaemon
-      command: [ '--tls=false', '--rootless', '--host=tcp://0.0.0.0:2375', '--registry-mirror=https://$HARBOR_URL', '--debug', '--log-level=debug', '--raw-logs' ]
+      command: [ '--tls=false', '--rootless', '--host=tcp://0.0.0.0:2375', '--registry-mirror=https://$HARBOR_URL/hub.docker.com/library', '--debug', '--log-level=debug', '--raw-logs' ]
 
 test:main:
   stage: test
