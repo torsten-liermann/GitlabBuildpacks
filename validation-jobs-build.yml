@@ -1,3 +1,4 @@
+# Job Serialisierung ueber "needs", weil bei parallel laufenden Runners es Probleme mit der Bereitstellung von Caches gibt.
 
 build:javaformat-validate:
   extends: [ .maven-java-environment ]
@@ -6,6 +7,7 @@ build:javaformat-validate:
   script: mvnw $MAVEN_CLI_OPTS io.spring.javaformat:spring-javaformat-maven-plugin::validate
 
 build:checkstyle:
+  needs: [ "build:javaformat-validate" ]
   extends: [ .maven-java-environment ]
   stage: build
   allow_failure: true
@@ -14,10 +16,11 @@ build:checkstyle:
 
 build:versions:display-property-updates:
   stage: build
+  needs: [ "build:checkstyle" ]
   extends: [ .maven-java-environment ]
   allow_failure: true
   artifacts:
-    paths: []
+    paths: [ ]
   script:
     - mvnw $MAVEN_CLI_OPTS $MAVEN_PROXY_OPTS versions:display-property-updates >/tmp/out && cat /tmp/out
     - grep -q 'The following version property updates are available' /tmp/out || exit 0 && (echo 'There is a newer dependency version available. See output above.' && exit 1)

@@ -15,16 +15,11 @@ cache: &global_cache
     <<: *global_cache
     policy: pull
   before_script:
-    - ( cd ../../../../../../cache/akdb/egov/bsp/eap6/demo-space && pwd ) || true
-    - ( cd ../../../../../../cache/akdb/egov/bsp/eap6/demo-space/build-$CI_PIPELINE_ID-protected && pwd ) || true
-    - find / 2>/dev/null -name cnb.tgz || true
-    - find / 2>/dev/null -name cache.zip || true
     - ls -l "/cache/$CI_PROJECT_PATH/build-$CI_PIPELINE_ID-protected" || true
+    - ls -l "/cache/$CI_PROJECT_PATH" || true
+    - ls -lR "/cache" || true
     - id || true
-    - mount | grep cache || true
-    - ls -ld /cache || true
-    - ls -lR /cache || true
-    - ( cd / && tar xzf "$CI_PROJECT_DIR/cnb.tgz" )
+    - ( cd / && tar xzf $CI_PROJECT_DIR/cnb.tgz )
     - export JAVA_HOME='/layers/paketo-buildpacks_bellsoft-liberica/jdk'
     - export MAVEN_HOME="$(dirname $(find /layers -name mvn -type f))"
     - export PATH="$(pwd):$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH"
