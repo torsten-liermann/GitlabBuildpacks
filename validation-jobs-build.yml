@@ -1,3 +1,5 @@
+# Job Serialisierung ueber "needs", weil bei parallel laufenden Runners es Probleme mit der Bereitstellung von Caches gibt.
+
 build:javaformat-validate:
   extends: [ .maven-java-environment ]
   stage: build
@@ -5,6 +7,7 @@ build:javaformat-validate:
   script: mvnw $MAVEN_CLI_OPTS io.spring.javaformat:spring-javaformat-maven-plugin::validate
 
 build:checkstyle:
+  needs: [ "build:javaformat-validate" ]
   extends: [ .maven-java-environment ]
   stage: build
   allow_failure: true
@@ -13,6 +16,7 @@ build:checkstyle:
 
 build:versions:display-property-updates:
   stage: build
+  needs: [ "build:checkstyle" ]
   extends: [ .maven-java-environment ]
   allow_failure: true
   artifacts:
