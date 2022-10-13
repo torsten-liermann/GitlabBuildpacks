@@ -16,6 +16,8 @@ cache: &global_cache
     policy: pull
   before_script:
     - ls -l "/cache/$CI_PROJECT_PATH/build-$CI_PIPELINE_ID-protected" || true
+    - ls -l "/cache/$CI_PROJECT_PATH" || true
+    - ls -lR "/cache" || true
     - id || true
     - ( cd / && tar xzf $CI_PROJECT_DIR/cnb.tgz )
     - export JAVA_HOME='/layers/paketo-buildpacks_bellsoft-liberica/jdk'
