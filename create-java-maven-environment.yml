@@ -14,6 +14,8 @@ cache: &global_cache
   cache:
     <<: *global_cache
     policy: pull
+  variables:
+    MAVEN_CLI_OPTS: "-no-transfer-progress --batch-mode"
   before_script:
     - ls -l "/cache/$CI_PROJECT_PATH/build-$CI_PIPELINE_ID-protected" || true
     - ls -l "/cache/$CI_PROJECT_PATH" || true
