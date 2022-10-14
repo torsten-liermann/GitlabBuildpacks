@@ -18,7 +18,6 @@ test:main:
         - target/surefire-reports/*.txt
         - target/failsafe-reports/*.xml
         - target/failsafe-reports/*.txt
-        - ./*.pdf
   coverage: '/Total.*?([0-9]{1,3})%/'
   allow_failure: true
   script:
