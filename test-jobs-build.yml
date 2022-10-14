@@ -3,11 +3,11 @@
   variables:
     DOCKER_HOST: tcp://dockerdaemon:2375
     DOCKER_TLS_CERTDIR: ""
-    DOCKER_IN_DOCKER_IMAGE: "harbor.infra.k8s.akdb.net/t527/akdb/egov/bsp/demos/docker:20.10.19-dind"
+    DOCKER_IN_DOCKER_IMAGE: "$HARBOR_URL/hub.docker.com/library/docker:20.10.16-dind"
   services:
     - name: $DOCKER_IN_DOCKER_IMAGE
       alias: dockerdaemon
-      command: [ '--tls=false', '--rootless', '--host=tcp://0.0.0.0:2375', '--registry-mirror=https://docker-io.repo-m.akdb.net', '--debug', '--log-level=debug', '--raw-logs' ]
+      command: ['--host=tcp://0.0.0.0:2375', '--registry-mirror=https://docker-io.repo-m.akdb.net', '--insecure-registry=docker-io.repo-m.akdb.net', '--debug', '--log-level=debug', '--raw-logs' ]
 
 test:main:
   stage: test
