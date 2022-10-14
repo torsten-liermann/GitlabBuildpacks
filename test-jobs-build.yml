@@ -3,7 +3,6 @@
   variables:
     DOCKER_HOST: tcp://dockerdaemon:2375
     DOCKER_TLS_CERTDIR: ""
-    DOCKER_IN_DOCKER_IMAGE: "$HARBOR_URL/hub.docker.com/library/docker:20.10.16-dind"
   services:
     - name: $DOCKER_IN_DOCKER_IMAGE
       alias: dockerdaemon
