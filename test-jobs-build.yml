@@ -3,7 +3,6 @@
   variables:
     DOCKER_HOST: tcp://dockerdaemon:2375
     DOCKER_TLS_CERTDIR: ""
-    REGISTRY_MIRROR: "https://docker-io.repo-m.akdb.net"
   services:
     - name: $DOCKER_IN_DOCKER_IMAGE
       alias: dockerdaemon
