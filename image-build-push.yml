@@ -16,6 +16,8 @@ cleanup_pipelinecache:
   stage: .post
   when: always
   allow_failure: true
+  variables:
+    GIT_STRATEGY: none
   script:
     - rm -f /cache/$CI_PROJECT_PATH/build-$CI_PIPELINE_ID-protected/cache.zip || true
     - echo "empty file" > cnb.tgz || true
