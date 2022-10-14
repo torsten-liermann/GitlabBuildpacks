@@ -11,12 +11,11 @@ deploy:docker:
     - /cnb/lifecycle/creator -platform ./platform -log-level debug -app . -cache-image $IMAGE_NAME/paketo-build-cache $IMAGE_NAME
 
 cleanup_pipelinecache:
-# Irgendein Image, damit der Cache als "root" behandelt werden kann.
+# Irgendein Image mit user "root", damit der Cache als "root" behandelt werden kann.
   image: $DOCKER_IMAGE
   stage: .post
   when: always
   allow_failure: true
   script:
-# funktioniert nicht ueberall 'permission denied'    - rm -f /cache/$CI_PROJECT_PATH/build-$CI_PIPELINE_ID-protected/cache.zip
     - rm -f /cache/$CI_PROJECT_PATH/build-$CI_PIPELINE_ID-protected/cache.zip || true
-    - echo "empty file" > cnb.tgz
+    - echo "empty file" > cnb.tgz || true

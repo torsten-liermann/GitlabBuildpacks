@@ -1,4 +1,4 @@
-
+# Docker in Docker notwendig, wenn Testscontainers oder andere Docker Image basierende Funktionen in den Tests zur Anwendung kommen
 .dockerservice:
   variables:
     DOCKER_HOST: tcp://dockerdaemon:2375
@@ -22,4 +22,4 @@ test:main:
   allow_failure: true
   script:
     - mvnw $MAVEN_CLI_OPTS test jacoco:report $MAVEN_PROXY_OPTS
-    - cat target/site/jacoco/index.html
+    - cat target/site/jacoco/index.html || true
