@@ -3,7 +3,7 @@
   variables:
     DOCKER_HOST: tcp://dockerdaemon:2375
     DOCKER_TLS_CERTDIR: ""
-    DOCKER_IND_DOCKER_IMAGE: "harbor.infra.k8s.akdb.net/t527/akdb/egov/bsp/demos/docker:20.10.19-dind"
+    DOCKER_IN_DOCKER_IMAGE: "harbor.infra.k8s.akdb.net/t527/akdb/egov/bsp/demos/docker:20.10.19-dind"
   services:
     - name: $DOCKER_IN_DOCKER_IMAGE
       alias: dockerdaemon
