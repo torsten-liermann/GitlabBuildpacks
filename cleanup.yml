@@ -1,5 +1,5 @@
 cleanup_pipelinecache:
-  image: $DOCKER_IMAGE
+  image: $ANY_IMAGE_WITH_ROOTUSER
   stage: .post
   when: always
   allow_failure: true
