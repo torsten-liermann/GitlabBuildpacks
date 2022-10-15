@@ -2,25 +2,34 @@
 # Loesung hier noch nicht im AKDB Gitlab Runner umgesetzt
 
 build:javaformat-validate:
-  extends: [ .maven-java-environment ]
   stage: build
+  extends: [ .maven-java-environment ]
+  except:
+    variables:
+      - $DISABLE_FORMAT_CHECK
   allow_failure: true
-  script: mvnw $MAVEN_CLI_OPTS io.spring.javaformat:spring-javaformat-maven-plugin::validate
+  script: $MAVEN_EXE $MAVEN_CLI_OPTS io.spring.javaformat:spring-javaformat-maven-plugin::validate
 
 build:checkstyle:
-  extends: [ .maven-java-environment ]
   stage: build
+  extends: [ .maven-java-environment ]
+  except:
+    variables:
+      - $DISABLE_CHECKSTYLE
   allow_failure: true
   script:
-    - mvnw $MAVEN_CLI_OPTS checkstyle:check
+    - $MAVEN_EXE $MAVEN_CLI_OPTS checkstyle:check
 
 build:versions:display-property-updates:
   stage: build
   extends: [ .maven-java-environment ]
+  except:
+    variables:
+      - $DISABLE_DISPLAY_VERSION_UPDATES
   allow_failure: true
   artifacts:
     paths: [ ]
   script:
-    - mvnw $MAVEN_CLI_OPTS $MAVEN_PROXY_OPTS versions:display-property-updates >/tmp/out && cat /tmp/out
+    - $MAVEN_EXE $MAVEN_CLI_OPTS $MAVEN_PROXY_OPTS versions:display-property-updates >/tmp/out && cat /tmp/out
     - grep -q 'The following version property updates are available' /tmp/out || exit 0 && (echo 'There is a newer dependency version available. See output above.' && exit 1)
 

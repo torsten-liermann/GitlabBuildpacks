@@ -6,16 +6,13 @@ deploy:docker:
     name: "report"
     paths:
       - report.toml
-  cache: []
+  cache: [ ]
   script:
-    - /cnb/lifecycle/creator -platform ./platform -log-level debug -app . -cache-image $IMAGE_NAME/paketo-build-cache $IMAGE_NAME
-
-cleanup_pipelinecache:
-# Irgendein Image mit user "root", damit der Cache als "root" behandelt werden kann.
-  image: $DOCKER_IMAGE
-  stage: .post
-  when: always
-  allow_failure: true
-  script:
-    - rm -f /cache/$CI_PROJECT_PATH/build-$CI_PIPELINE_ID-protected/cache.zip || true
-    - echo "empty file" > cnb.tgz || true
+    - |
+      ENV_DIR=./platform/env
+      mkdir -p "$ENV_DIR"
+      for key in "${!BP@}"; do
+          path="${ENV_DIR}/${key}"
+          echo -n "${!key}" > "$path"
+      done
+    - /cnb/lifecycle/creator -platform ./platform ${DEBUG:+-log-level debug} -app . -cache-image $APP_IMAGE_NAME/paketo-build-cache $APP_IMAGE_NAME
