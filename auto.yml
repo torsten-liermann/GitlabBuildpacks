@@ -6,6 +6,7 @@ variables:
   ANY_IMAGE_WITH_ROOTUSER: "docker:20.10.19"
   # Is needed for image based tests like e.g. with Testcontainers https://www.testcontainers.org
   DOCKER_IN_DOCKER_IMAGE: "docker:20.10.19-dind"
+  MAVEN_EXE: "mvn"
 
 include:
   - local: create-java-maven-environment.yml
