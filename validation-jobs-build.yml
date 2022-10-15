@@ -1,4 +1,5 @@
 # Job Serialisierung ueber "needs", weil bei parallel laufenden Runners es Probleme mit der Bereitstellung von Caches gibt.
+# Loesung hier noch nicht im AKDB Gitlab Runner umgesetzt
 
 build:javaformat-validate:
   extends: [ .maven-java-environment ]

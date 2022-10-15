@@ -1,3 +1,9 @@
+variables:
+  IMAGE_NAME: "define me"
+  CNCF_BUILDER_IMAGE: "$HARBOR_URL/t527/akdb/egov/bsp/demos/paketobuildpacks/builder:base"
+  DOCKER_IMAGE: "$HARBOR_URL/hub.docker.com/library/docker:20.10.16"
+  DOCKER_IN_DOCKER_IMAGE: "$HARBOR_URL/hub.docker.com/library/docker:20.10.19-dind"
+
 include:
   - local: create-java-maven-environment.yml
   - local: validation-jobs-build.yml

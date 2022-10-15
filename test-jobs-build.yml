@@ -1,4 +1,4 @@
-
+# Docker in Docker notwendig, wenn Testscontainers oder andere Docker Image basierende Funktionen in den Tests zur Anwendung kommen
 .dockerservice:
   variables:
     DOCKER_HOST: tcp://dockerdaemon:2375
@@ -6,7 +6,7 @@
   services:
     - name: $DOCKER_IN_DOCKER_IMAGE
       alias: dockerdaemon
-      command: [ '--tls=false', '--rootless', '--host=tcp://0.0.0.0:2375', '--registry-mirror=https://$HARBOR_URL', '--debug', '--log-level=debug', '--raw-logs' ]
+      command: ['--host=tcp://0.0.0.0:2375', '--registry-mirror=https://docker-io.repo-m.akdb.net', '--insecure-registry=docker-io.repo-m.akdb.net', '--debug', '--log-level=debug', '--raw-logs' ]
 
 test:main:
   stage: test
@@ -18,9 +18,8 @@ test:main:
         - target/surefire-reports/*.txt
         - target/failsafe-reports/*.xml
         - target/failsafe-reports/*.txt
-        - ./*.pdf
   coverage: '/Total.*?([0-9]{1,3})%/'
   allow_failure: true
   script:
     - mvnw $MAVEN_CLI_OPTS test jacoco:report $MAVEN_PROXY_OPTS
-    - cat target/site/jacoco/index.html
+    - cat target/site/jacoco/index.html || true

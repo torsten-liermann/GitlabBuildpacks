@@ -14,11 +14,9 @@ cache: &global_cache
   cache:
     <<: *global_cache
     policy: pull
+  variables:
+    MAVEN_CLI_OPTS: "--no-transfer-progress --batch-mode"
   before_script:
-    - ls -l "/cache/$CI_PROJECT_PATH/build-$CI_PIPELINE_ID-protected" || true
-    - ls -l "/cache/$CI_PROJECT_PATH" || true
-    - ls -lR "/cache" || true
-    - id || true
     - ( cd / && tar xzf $CI_PROJECT_DIR/cnb.tgz )
     - export JAVA_HOME='/layers/paketo-buildpacks_bellsoft-liberica/jdk'
     - export MAVEN_HOME="$(dirname $(find /layers -name mvn -type f))"
@@ -29,7 +27,6 @@ create-java-maven-environment:
   stage: .pre
   extends: [ ".registry-auth-for-docker" ]
   script:
-    - env
     - echo -n -this-option-will-break-maven > platform/env/BP_MAVEN_BUILD_ARGUMENTS
     - /cnb/lifecycle/creator -platform ./platform -log-level debug -app . -cache-image $IMAGE_NAME/paketo-build-cache:latest $IMAGE_NAME:latest || true
     - tar czf cnb.tgz /layers ~/.docker
