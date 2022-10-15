@@ -2,7 +2,7 @@ cache: &global_cache
   key: "build-$CI_PIPELINE_ID"
   paths:
     - "cnb.tgz"
-  policy: pull-push
+  policy: push
 
 .registry-auth-for-docker:
   before_script:
