@@ -22,6 +22,7 @@ cache: &global_cache
       export JAVA_HOME='/layers/paketo-buildpacks_bellsoft-liberica/jdk'
       export MAVEN_HOME="$(dirname $(find /layers -name mvn -type f))"
       export PATH="$(pwd):$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH"
+      sleep 3600
 
 create-java-maven-environment:
   image: "$CNCF_BUILDER_IMAGE"
