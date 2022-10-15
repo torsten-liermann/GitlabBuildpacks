@@ -26,6 +26,17 @@ cache: &global_cache
 create-java-maven-environment:
   image: "$CNCF_BUILDER_IMAGE"
   stage: .pre
+  before_script:
+    - |
+      ENV_DIR=./platform/env
+      mkdir -p "$ENV_DIR"
+      for env in "${envs[@]}"; do
+          IFS='=' read -r key value string <<< "$env"
+          if [[ "$key" != "" && "$value" != "" ]]; then
+              path="${ENV_DIR}/${key}"
+              echo -n "$value" > "$path"
+          fi
+      done
   script:
     - |
       echo -n -this-option-will-break-maven > platform/env/BP_MAVEN_BUILD_ARGUMENTS
