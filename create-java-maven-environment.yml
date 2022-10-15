@@ -5,6 +5,8 @@ cache: &global_cache
   policy: pull-push
 
 .registry-auth-for-docker:
+  only:
+    variable: $HARBOR_URL
   before_script:
     - mkdir ~/.docker
     - echo "{\"auths\":{\"$HARBOR_URL\":{\"username\":\"$HARBOR_USERNAME\",\"password\":\"$HARBOR_PASSWORD\"}}}" >> ~/.docker/config.json
