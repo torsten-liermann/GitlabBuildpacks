@@ -1,3 +1,0 @@
-variables:
-  IMAGE_NAME: "$HARBOR_URL/buildpack-demo"
-  CNCF_BUILDER_IMAGE: "paketobuildpacks/builder"
