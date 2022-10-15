@@ -30,12 +30,9 @@ create-java-maven-environment:
     - |
       ENV_DIR=./platform/env
       mkdir -p "$ENV_DIR"
-      for env in "${envs[@]}"; do
-          IFS='=' read -r key value string <<< "$env"
-          if [[ "$key" != "" && "$value" != "" ]]; then
-              path="${ENV_DIR}/${key}"
-              echo -n "$value" > "$path"
-          fi
+      for key in "${!BP@}"; do
+          path="${ENV_DIR}/${key}"
+          echo -n "${!key}" > "$path"
       done
   script:
     - |
