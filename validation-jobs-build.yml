@@ -6,7 +6,7 @@ build:javaformat-validate:
   extends: [ .maven-java-environment ]
   except:
     variables:
-      - $DISABLE_DISPLAY_VERSION_UPDATES
+      - $DISABLE_FORMAT_CHECK
   allow_failure: true
   script: mvnw $MAVEN_CLI_OPTS io.spring.javaformat:spring-javaformat-maven-plugin::validate
 
