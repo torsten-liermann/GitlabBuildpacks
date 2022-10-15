@@ -8,6 +8,6 @@ deploy:docker:
       - report.toml
   cache: []
   script:
-    - /cnb/lifecycle/creator -platform ./platform -log-level debug -app . -cache-image $APP_IMAGE_NAME/paketo-build-cache $APP_IMAGE_NAME
+    - /cnb/lifecycle/creator -platform ./platform $DEBUG_BUILDPACK -app . -cache-image $APP_IMAGE_NAME/paketo-build-cache $APP_IMAGE_NAME
 
 

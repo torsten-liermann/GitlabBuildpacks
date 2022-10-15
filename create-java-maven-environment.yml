@@ -28,5 +28,5 @@ create-java-maven-environment:
   extends: [ ".registry-auth-for-docker" ]
   script:
     - echo -n -this-option-will-break-maven > platform/env/BP_MAVEN_BUILD_ARGUMENTS
-    - /cnb/lifecycle/creator -platform ./platform -log-level debug -app . -cache-image $APP_IMAGE_NAME/paketo-build-cache:latest $APP_IMAGE_NAME:latest || true
+    - /cnb/lifecycle/creator -platform ./platform $DEBUG_BUILDPACK -app . -cache-image $APP_IMAGE_NAME/paketo-build-cache:latest $APP_IMAGE_NAME:latest || true
     - tar czf cnb.tgz /layers ~/.docker
