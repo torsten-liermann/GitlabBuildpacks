@@ -5,8 +5,6 @@ cache: &global_cache
   policy: pull-push
 
 .registry-auth-for-docker:
-  only:
-    variable: $DOCKER_REGISTRY_URL
   before_script:
     - mkdir ~/.docker
     - echo "{\"auths\":{\"$DOCKER_REGISTRY_URL\":{\"username\":\"$DOCKER_REGISTRY_USERNAME\",\"password\":\"$DOCKER_REGISTRY_PASSWORD\"}}}" >> ~/.docker/config.json
