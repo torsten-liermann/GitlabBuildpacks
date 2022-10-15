@@ -19,10 +19,9 @@ cache: &global_cache
   before_script:
     - | 
       ( cd / && tar xzf $CI_PROJECT_DIR/cnb.tgz )
-      export JAVA_HOME='/layers/paketo-buildpacks_bellsoft-liberica/jdk'
+      export JAVA_HOME="$(cat $(find /layers -name JAVA_HOME* | grep /env.build/))"
       export MAVEN_HOME="$(dirname $(dirname $(find /layers -name mvn -type f)))"
       PATH="$(pwd):$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH"
-      sleep 3600
 
 create-java-maven-environment:
   image: "$CNCF_BUILDER_IMAGE"
