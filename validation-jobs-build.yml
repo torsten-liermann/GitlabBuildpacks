@@ -13,6 +13,9 @@ build:javaformat-validate:
 build:checkstyle:
   stage: build
   extends: [ .maven-java-environment ]
+  except:
+    variables:
+      - $DISABLE_CHECKSTYLE
   allow_failure: true
   script:
     - mvnw $MAVEN_CLI_OPTS checkstyle:check
