@@ -9,5 +9,3 @@ deploy:docker:
   cache: []
   script:
     - /cnb/lifecycle/creator -platform ./platform ${DEBUG:+-log-level debug} -app . -cache-image $APP_IMAGE_NAME/paketo-build-cache $APP_IMAGE_NAME
-
-

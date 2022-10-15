@@ -2,14 +2,17 @@
 # Loesung hier noch nicht im AKDB Gitlab Runner umgesetzt
 
 build:javaformat-validate:
-  extends: [ .maven-java-environment ]
   stage: build
+  extends: [ .maven-java-environment ]
+  except:
+    variables:
+      - $DISABLE_DISPLAY_VERSION_UPDATES
   allow_failure: true
   script: mvnw $MAVEN_CLI_OPTS io.spring.javaformat:spring-javaformat-maven-plugin::validate
 
 build:checkstyle:
-  extends: [ .maven-java-environment ]
   stage: build
+  extends: [ .maven-java-environment ]
   allow_failure: true
   script:
     - mvnw $MAVEN_CLI_OPTS checkstyle:check
@@ -17,6 +20,9 @@ build:checkstyle:
 build:versions:display-property-updates:
   stage: build
   extends: [ .maven-java-environment ]
+  except:
+    variables:
+      - $DISABLE_DISPLAY_VERSION_UPDATES
   allow_failure: true
   artifacts:
     paths: [ ]

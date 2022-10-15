@@ -1,4 +1,3 @@
-# Docker in Docker notwendig, wenn Testscontainers oder andere Docker Image basierende Funktionen in den Tests zur Anwendung kommen
 .dockerservice:
   variables:
     DOCKER_HOST: tcp://dockerdaemon:2375
@@ -8,9 +7,13 @@
     - name: $DOCKER_IN_DOCKER_IMAGE
       alias: dockerdaemon
       command: ['--host=tcp://0.0.0.0:2375', '--registry-mirror=https://docker-io.repo-m.akdb.net', '--insecure-registry=docker-io.repo-m.akdb.net', '--debug', '--log-level=debug', '--raw-logs' ]
+
 test:main:
   stage: test
   extends: [ .maven-java-environment, .dockerservice ]
+  except:
+    variables:
+      - $DISABLE_UNIT_TEST
   artifacts:
     reports:
       junit:
