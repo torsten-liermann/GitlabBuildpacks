@@ -17,16 +17,17 @@ cache: &global_cache
   variables:
     MAVEN_CLI_OPTS: "--no-transfer-progress --batch-mode"
   before_script:
-    - ( cd / && tar xzf $CI_PROJECT_DIR/cnb.tgz )
-    - export JAVA_HOME='/layers/paketo-buildpacks_bellsoft-liberica/jdk'
-    - export MAVEN_HOME="$(dirname $(find /layers -name mvn -type f))"
-    - export PATH="$(pwd):$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH"
+    - | 
+      ( cd / && tar xzf $CI_PROJECT_DIR/cnb.tgz )
+      export JAVA_HOME='/layers/paketo-buildpacks_bellsoft-liberica/jdk'
+      export MAVEN_HOME="$(dirname $(find /layers -name mvn -type f))"
+      export PATH="$(pwd):$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH"
 
 create-java-maven-environment:
   image: "$CNCF_BUILDER_IMAGE"
   stage: .pre
-  extends: [ ".registry-auth-for-docker" ]
   script:
-    - echo -n -this-option-will-break-maven > platform/env/BP_MAVEN_BUILD_ARGUMENTS
-    - /cnb/lifecycle/creator -platform ./platform $DEBUG_BUILDPACK -app . -cache-image $APP_IMAGE_NAME/paketo-build-cache:latest $APP_IMAGE_NAME:latest || true
-    - tar czf cnb.tgz /layers ~/.docker
+    - |
+      echo -n -this-option-will-break-maven > platform/env/BP_MAVEN_BUILD_ARGUMENTS
+      /cnb/lifecycle/creator -platform ./platform $DEBUG_BUILDPACK -app . -cache-image $APP_IMAGE_NAME/paketo-build-cache:latest $APP_IMAGE_NAME:latest || true
+      tar czf cnb.tgz /layers ~/.docker
