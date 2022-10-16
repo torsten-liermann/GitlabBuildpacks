@@ -2,12 +2,23 @@ cache: &global_cache
   key: "build-$CI_PIPELINE_ID"
   paths:
     - "cnb.tgz"
-  policy: pull-push
+  policy: push
 
 .registry-auth-for-docker:
   before_script:
     - mkdir ~/.docker
-    - echo "{\"auths\":{\"$HARBOR_URL\":{\"username\":\"$HARBOR_USERNAME\",\"password\":\"$HARBOR_PASSWORD\"}}}" >> ~/.docker/config.json
+    - echo "{\"auths\":{\"$DOCKER_REGISTRY_URL\":{\"username\":\"$DOCKER_REGISTRY_USERNAME\",\"password\":\"$DOCKER_REGISTRY_PASSWORD\"}}}" >> ~/.docker/config.json
+
+.adopt-environment:
+  script:
+  - |
+    ENV_DIR=./platform/env
+    mkdir -p "$ENV_DIR"
+    IFS=', ' read -r -a _forwarded_vars <<< "$AUTO_DEVOPS_BUILD_IMAGE_FORWARDED_CI_VARIABLES"
+    for key in "${!BP@}" "${_forwarded_vars[@]}"; do
+        path="${ENV_DIR}/${key}"
+        echo -n "${!key}" > "$path"
+    done
 
 .maven-java-environment:
   image: "$CNCF_BUILDER_IMAGE"
@@ -17,16 +28,18 @@ cache: &global_cache
   variables:
     MAVEN_CLI_OPTS: "--no-transfer-progress --batch-mode"
   before_script:
-    - ( cd / && tar xzf $CI_PROJECT_DIR/cnb.tgz )
-    - export JAVA_HOME='/layers/paketo-buildpacks_bellsoft-liberica/jdk'
-    - export MAVEN_HOME="$(dirname $(find /layers -name mvn -type f))"
-    - export PATH="$(pwd):$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH"
+    - | 
+      ( cd / && tar xzf $CI_PROJECT_DIR/cnb.tgz )
+      export JAVA_HOME="$(cat $(find /layers -name JAVA_HOME* | grep /env.build/))"
+      export MAVEN_HOME="$(dirname $(dirname $(find /layers -name mvn -type f)))"
+      PATH="$(pwd):$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH"
 
 create-java-maven-environment:
   image: "$CNCF_BUILDER_IMAGE"
   stage: .pre
-  extends: [ ".registry-auth-for-docker" ]
   script:
-    - echo -n -this-option-will-break-maven > platform/env/BP_MAVEN_BUILD_ARGUMENTS
-    - /cnb/lifecycle/creator -platform ./platform -log-level debug -app . -cache-image $IMAGE_NAME/paketo-build-cache:latest $IMAGE_NAME:latest || true
-    - tar czf cnb.tgz /layers ~/.docker
+    - !reference [.adopt-environment, script ]
+    - |
+      echo -n -this-option-will-break-maven > platform/env/BP_MAVEN_BUILD_ARGUMENTS
+      /cnb/lifecycle/creator -platform ./platform ${DEBUG:+-log-level debug} -app . -cache-image $APP_IMAGE_NAME/paketo-build-cache:latest $APP_IMAGE_NAME:latest || true
+      tar czf cnb.tgz /layers

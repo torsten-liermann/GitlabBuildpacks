@@ -1,7 +1,7 @@
-# Docker in Docker notwendig, wenn Testscontainers oder andere Docker Image basierende Funktionen in den Tests zur Anwendung kommen
 .dockerservice:
   variables:
     DOCKER_HOST: tcp://dockerdaemon:2375
+    # for the time being without tls. see also missing --tlsverify option
     DOCKER_TLS_CERTDIR: ""
   services:
     - name: $DOCKER_IN_DOCKER_IMAGE
@@ -11,15 +11,15 @@
 test:main:
   stage: test
   extends: [ .maven-java-environment, .dockerservice ]
+  except:
+    variables:
+      - $DISABLE_UNIT_TEST
   artifacts:
     reports:
       junit:
-        - target/surefire-reports/*.xml
-        - target/surefire-reports/*.txt
-        - target/failsafe-reports/*.xml
-        - target/failsafe-reports/*.txt
+        - target/*-reports/*.*
   coverage: '/Total.*?([0-9]{1,3})%/'
   allow_failure: true
   script:
-    - mvnw $MAVEN_CLI_OPTS test jacoco:report $MAVEN_PROXY_OPTS
+    - $MAVEN_EXE $MAVEN_CLI_OPTS test jacoco:report $MAVEN_PROXY_OPTS
     - cat target/site/jacoco/index.html || true
