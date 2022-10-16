@@ -8,11 +8,5 @@ deploy:docker:
       - report.toml
   cache: [ ]
   script:
-    - |
-      ENV_DIR=./platform/env
-      mkdir -p "$ENV_DIR"
-      for key in "${!BP@}"; do
-          path="${ENV_DIR}/${key}"
-          echo -n "${!key}" > "$path"
-      done
+    - !reference [.adopt-environment, script ]
     - /cnb/lifecycle/creator -platform ./platform ${DEBUG:+-log-level debug} -app . -cache-image $APP_IMAGE_NAME/paketo-build-cache $APP_IMAGE_NAME
