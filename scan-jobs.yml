@@ -1,0 +1,18 @@
+scan:nexus-iq-report:
+  stage: scan
+  allow_failure: true
+  extends: [ .maven-java-environment ]
+  script:
+    - $MAVEN_EXE $MAVEN_CLI_OPTS com.sonatype.clm:clm-maven-plugin::evaluate -Dclm.serverUrl=${NEXUS_IQ_URL}
+      -Dclm.applicationId=${CI_PROJECT_NAME} -Dclm.username=${NEXUS_IQ_USERNAME} -Dclm.password=${NEXUS_IQ_PASSWORD}
+
+scan:sonar:
+  variables:
+    SONAR_PLUGIN_VERSION: "3.7.0.1746"
+    SONAR_PROJECT_KEY: $CI_JOB_NAME
+  stage: scan
+  allow_failure: true
+  extends: [ .maven-java-environment ]
+  script:
+    - $MAVEN_EXE $MAVEN_CLI_OPTS org.sonarsource.scanner.maven:sonar-maven-plugin:$SONAR_PLUGIN_VERSION:sonar
+      -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_TOKEN
