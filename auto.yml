@@ -12,10 +12,12 @@ include:
   - local: create-java-maven-environment.yml
   - local: validation-jobs-build.yml
   - local: test-jobs-build.yml
+  - local: scan-jobs.yml
   - local: image-build-push.yml
   - local: cleanup.yml
 
 stages:
   - build
   - test
+  - scan
   - push
