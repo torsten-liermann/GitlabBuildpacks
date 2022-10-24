@@ -7,6 +7,8 @@ deploy:docker:
     paths:
       - report.toml
   cache: [ ]
+  variables:
+    CNB_PLATFORM_API: "0.9"
   script:
     - !reference [.adopt-environment, script ]
     - /cnb/lifecycle/creator -platform ./platform ${DEBUG:+-log-level debug} -app . -cache-image $APP_IMAGE_NAME/paketo-build-cache $APP_IMAGE_NAME
