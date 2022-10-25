@@ -6,7 +6,7 @@ cache: &global_cache
 
 .registry-auth-for-docker:
   before_script:
-    - [ ! -z "$DOCKER_REGISTRY_USERNAME" ] && { mkdir ~/.docker && echo "{\"auths\":{\"$DOCKER_REGISTRY_URL\":{\"username\":\"$DOCKER_REGISTRY_USERNAME\",\"password\":\"$DOCKER_REGISTRY_PASSWORD\"}}}" >> ~/.docker/config.json ; }
+  - if [ ! -z "$DOCKER_REGISTRY_USERNAME" ] ; then mkdir ~/.docker ; echo "{\"auths\":{\"$DOCKER_REGISTRY_URL\":\"username\":\"$DOCKER_REGISTRY_USERNAME\",\"password\":\"$DOCKER_REGISTRY_PASSWORD\"}}}" >> ~/.docker/config.json ; fi
 
 .adopt-environment:
   script:
