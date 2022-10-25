@@ -36,7 +36,7 @@ cache: &global_cache
 create-java-maven-environment:
   image: "$CNCF_BUILDER_IMAGE"
   stage: .pre
-  extends: .registry-auth-for-docker
+  extends: [ ".registry-auth-for-docker" ]
   script:
     - !reference [.adopt-environment, script ]
     - |
