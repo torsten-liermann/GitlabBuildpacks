@@ -1,6 +1,7 @@
 variables:
   APP_IMAGE_NAME: "define me"
   CNCF_BUILDER_IMAGE: "paketobuildpacks/builder:tiny"
+  CNB_PLATFORM_API: "0.8"
   DEBUG_BUILDPACK: "-log-level debug"
   # Any image with user "root" so that the cache can be deleted as "root".
   ANY_IMAGE_WITH_ROOTUSER: "docker:20.10.19"
