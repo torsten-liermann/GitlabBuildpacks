@@ -14,4 +14,5 @@ scan:sonar:
   allow_failure: true
   extends: [ .maven-java-environment ]
   script:
-    - $MAVEN_EXE $MAVEN_CLI_OPTS org.sonarsource.scanner.maven:sonar-maven-plugin:$SONAR_PLUGIN_VERSION:sonar -Dsonar.projectKey=$SONAR_PROJECT_KEY
+    - $MAVEN_EXE $MAVEN_CLI_OPTS org.sonarsource.scanner.maven:sonar-maven-plugin:$SONAR_PLUGIN_VERSION:sonar
+      -Dsonar.projectKey=$SONAR_PROJECT_KEY -Dsonar.host.url=$SONAR_HOST -Dsonar.login=$SONAR_TOKEN
