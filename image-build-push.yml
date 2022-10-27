@@ -9,4 +9,5 @@ deploy:docker:
   cache: [ ]
   script:
     - !reference [.adopt-environment, script ]
-    - /cnb/lifecycle/creator -platform ./platform ${DEBUG:+-log-level debug} -app . -cache-image $APP_IMAGE_NAME/paketo-build-cache $APP_IMAGE_NAME
+    - /cnb/lifecycle/creator -platform ./platform ${DEBUG:+-log-level debug} -app . -run-image "$CNCF_RUN_IMAGE" -cache-image $APP_IMAGE_NAME/paketo-build-cache $APP_IMAGE_NAME
+    - if [ -f "/layers/report.toml]; then cp /layers/report.toml . ; fi
