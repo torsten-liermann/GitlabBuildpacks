@@ -39,7 +39,7 @@ create-java-maven-environment:
   stage: .pre
   extends: [ ".registry-auth-for-docker" ]
   script:
-    - curl -vv -X HEAD https://harbor.infra.k8s.akdb.net/v2/
+    - curl -vv -X HEAD https://harbor.infra.k8s.akdb.net/v2/ || true
     - !reference [.adopt-environment, script ]
     - |
       echo -n -this-option-will-break-maven > platform/env/BP_MAVEN_BUILD_ARGUMENTS
